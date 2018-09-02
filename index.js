@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const S = require('string');
 const fs = require('fs');
+const sticker = require('./features/stickers.js');
 
 const client = new Discord.Client();
 const cooldowns = new Discord.Collection();
@@ -35,11 +36,10 @@ client.on('message', (msg) => {
     }    
 
     try {
-        const files = fs.readdirSync(`./assets/`);
-        const sticker = files.find(filename => S(filename).contains(stickerKeyword));
-        if (sticker) {
-            let stickerPath = `./assets/${sticker}`;
-            msg.channel.send('', {files: [stickerPath]});
+        if (stickerKeyword === 'parse' && msg.author.id === process.env.OWNER_ID) {
+            sticker.parse(msg);
+        } else {
+            sticker.get(msg, stickerKeyword);
         }
     } catch (error) {
         console.error(error);
