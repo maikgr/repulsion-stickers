@@ -38,6 +38,8 @@ client.on('message', (msg) => {
     try {
         if (stickerKeyword === 'parse' && msg.author.id === process.env.OWNER_ID) {
             sticker.parse(msg);
+        } else if (stickerKeyword === 'refresh' && msg.author.id === process.env.OWNER_ID) {
+            sticker.refresh(msg);
         } else {
             sticker.get(msg, stickerKeyword);
         }

@@ -17,7 +17,7 @@ module.exports = {
     parse : parseAssets
 }
 
-async function refreshStickers() {
+async function refreshStickers(message) {
     stickers = await stickerService.getAll();
     availableStickerKey = stickers.map(s => s.keyword);
 }
