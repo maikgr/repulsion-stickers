@@ -20,6 +20,7 @@ module.exports = {
 async function refreshStickers(message) {
     stickers = await stickerService.getAll();
     availableStickerKey = stickers.map(s => s.keyword);
+    if (message) message.channel.send("Sticker list updated.");
 }
 
 async function getSticker(message, keyword) {
