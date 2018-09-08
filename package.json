@@ -11,6 +11,8 @@
   "dependencies": {
     "discord.js": "^11.4.2",
     "imgur": "^0.2.1",
+    "is-url": "^1.2.4",
+    "moment": "^2.22.2",
     "mongoose": "^5.2.10",
     "string": "^3.3.3"
   }

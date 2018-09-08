@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const moment = require('moment');
 const Schema = mongoose.Schema;
 const db = mongoose.connection;
 
@@ -25,15 +26,26 @@ process.on('SIGINT', () => {
 
 const stickerSchema = new Schema({
     keyword: String,
-    url: String
+    url: String,
+    upload : {
+        id: String,
+        username: String,
+        date: Date
+    }
 });
 
 const Sticker = mongoose.model('stickers', stickerSchema);
 
-function addSticker(keyword, url) {
+function addSticker(keyword, url, uploaderId, uploaderUsername) {
+    let currentDate = moment().format();
     let newSticker = new Sticker({
         keyword: keyword,
-        url: url
+        url: url,
+        upload: {
+            id: uploaderId,
+            username: uploaderUsername,
+            date: currentDate
+        }
     });
 
     newSticker.save((err) => {
