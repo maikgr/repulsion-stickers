@@ -4,7 +4,7 @@ const isUrl = require('is-url');
 module.exports = {
     name: 'add',
     args: true,
-    ownerOnly: true,
+    ownerOnly: false,
     cooldown: 3,
     sortIndex: 0,
     usage: '[keyword] [url]',

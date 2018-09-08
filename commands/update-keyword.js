@@ -3,7 +3,7 @@ const stickerService = require('../services/sticker_service.js');
 module.exports = {
     name: 'update-keyword',
     args: true,
-    ownerOnly: true,
+    ownerOnly: false,
     cooldown: 3,
     sortIndex: 0,
     usage: '[oldkeyword] [newkeyword]',

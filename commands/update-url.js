@@ -5,7 +5,7 @@ const S = require('string');
 module.exports = {
     name: 'update-url',
     args: true,
-    ownerOnly: true,
+    ownerOnly: false,
     cooldown: 3,
     sortIndex: 0,
     usage: '[keyword] [newurl]',
