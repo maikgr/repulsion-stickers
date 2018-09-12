@@ -1,6 +1,5 @@
 const stickerService = require('../services/sticker_service.js');
-const isUrl = require('is-url');
-const S = require('string');
+const validUrl = require('valid-url');
 
 module.exports = {
     name: 'update-url',
@@ -10,11 +9,11 @@ module.exports = {
     sortIndex: 0,
     usage: '[keyword] [newurl]',
     execute(message, args) {
-        return updateKeyword(message, args);
+        return updateUrl(message, args);
     }
 };
 
-async function updateKeyword(message, args) {
+async function updateUrl(message, args) {
     const keyword = args[0];
     const url = args[1];
     const stickerKeys = (await stickerService.getAll()).map(s => s.keyword);
@@ -23,7 +22,7 @@ async function updateKeyword(message, args) {
         return message.reply(`Cannot find sticker with keyword ${keyword}.`);
     }
 
-    if (!isUrl(url) || url.endsWith('.jpg') || url.endsWith('.png') || url.endsWith('.gif')) {
+    if (!validUrl.isUri(url) || url.endsWith('.jpg') || url.endsWith('.png') || url.endsWith('.gif')) {
         return message.reply(`Incorrect url, please provide direct link url that ends with .jpg, .png, or .gif`);
     }
 

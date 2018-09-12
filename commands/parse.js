@@ -1,6 +1,7 @@
 const fs = require('fs');
-const imgur = require('imgur');
+const imageService = require('../services/imgur_service.js');
 const stickerService = require('../services/sticker_service.js');
+const assetPath = './assets/';
 
 module.exports = {
     name: 'parse',
@@ -14,10 +15,6 @@ module.exports = {
     }
 };
 
-const albumId = 'V7qYbqX';
-const assetPath = './assets/';
-imgur.setCredentials(process.env.IMGUR_ID, process.env.IMGUR_PASSWORD, process.env.IMGUR_CLIENTID);
-
 async function parseAssets(message) {
     const files = fs.readdirSync(assetPath);
     if (files.length > 0) {
@@ -26,9 +23,9 @@ async function parseAssets(message) {
             try {
                 let filePath = assetPath + files[i];
                 let stickerName = files[i].split('.')[0];
-                let imgJson = await imgur.uploadFile(filePath, albumId);
+                let link = await imageService.upload(filePath);
 
-                await stickerService.add(stickerName, imgJson.data.link, process.env.OWNER_ID, 'VarZ');
+                await stickerService.add(stickerName, link, process.env.OWNER_ID, 'VarZ');
                 fs.unlinkSync(filePath);
             } catch (error) {
                 return message.channel.send(error.message.message);
