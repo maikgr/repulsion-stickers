@@ -16,7 +16,7 @@ async function upload(url) {
         }
 
         return undefined;
-    } catch {
+    } catch (error) {
         return undefined;
     }
 }
