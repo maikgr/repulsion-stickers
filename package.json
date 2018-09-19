@@ -13,6 +13,8 @@
     "imgur": "^0.2.1",
     "moment": "^2.22.2",
     "mongoose": "^5.2.10",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.5",
     "string": "^3.3.3",
     "valid-url": "^1.0.9"
   }

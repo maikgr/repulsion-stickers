@@ -1,5 +1,6 @@
 const RichEmbed = require('discord.js').RichEmbed;
 const stickerService = require('../services/sticker_service.js');
+const apiService = require('../services/api-service');
 
 let stickers = [];
 let availableStickerKey;
@@ -17,13 +18,34 @@ async function refreshStickers(message) {
 
 async function getSticker(message, keyword) {
     if (keyword.length < 3) return;
+    try {
+        const sticker = await apiService.get(keyword);
+        if (sticker) {
+            const embed = new RichEmbed().setImage(sticker.url);
+            message.channel.send({ embed: embed });
+            updateStickerCount(sticker);
+        }
+        return;
+    }
+    catch (error) {
+        console.log('[sticker.js]')
+        console.error(error);
+        return;
+    }
+}
 
-    let stickerKey =  availableStickerKey.find(stickerKey => stickerKey == keyword);
-    if (!stickerKey) return;
+async function updateStickerCount(sticker) {
+    const newSticker = {
+        keyword: sticker.keyword,
+        url: sticker.url,
+        useCount: sticker.useCount ? ++useCount : 1,
+        upload: {
+            id: sticker.upload.id || process.env.OWNER_ID,
+            username: sticker.upload.username || 'VarZ'
+        }
+    }
 
-    let sticker = await stickerService.get(stickerKey);
-    const embed = new RichEmbed().setImage(sticker.url);
-    return message.channel.send({ embed: embed });
+    await apiService.update(sticker.id, newSticker);
 }
 
 refreshStickers();
