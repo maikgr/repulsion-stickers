@@ -1,6 +1,6 @@
 const request = require('request-promise-native');
 
-const apiUrl = 'https://repulsion-stickers-api.herokuapp.com/api/stickers/'
+const apiUrl = 'https://varuzuapi.azurewebsites.net/api/stickers/'
 
 module.exports.get = function (keyword) {
     return request
@@ -21,11 +21,16 @@ module.exports.search = function (query) {
 }
 
 module.exports.update = function (id, sticker) {
-    return request
-        .put(apiUrl + id, sticker)
+    const options = {
+        method: 'PUT',
+        uri: apiUrl + id,
+        body: sticker,
+        json: true
+    };
+
+    return request(options)
         .then((response) => {
-            const json = JSON.parse(response);
-            return json.data;
+            return response.data;
         })
         .catch((error) => {
             console.error(error);
@@ -33,12 +38,17 @@ module.exports.update = function (id, sticker) {
 }
 
 module.exports.add = function (sticker) {
-    return request
-        .post(apiUrl, JSON.stringify(sticker))
+    const options = {
+        method: 'POST',
+        uri: apiUrl,
+        body: sticker,
+        json: true
+    };
+
+    return request(options)
         .then((response) => {
-            const json = JSON.parse(response);
-            return json.data;
-        })
+            return response.data;
+        });
 }
 
 module.exports.remove = function (id) {

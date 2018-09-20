@@ -13,7 +13,7 @@ module.exports = {
 async function refreshStickers(message) {
     stickers = await stickerService.getAll();
     availableStickerKey = stickers.map(s => s.keyword);
-    if (message) message.channel.send("Sticker list updated.");
+    if (message) message.channel.send("[Testing phase] Any update to sticker database is now refreshed automatically, no need to do refresh command.");
 }
 
 async function getSticker(message, keyword) {
