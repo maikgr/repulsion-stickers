@@ -1,4 +1,5 @@
-const stickerService = require('../services/sticker_service.js');
+const apiService = require('../services/api-service');
+const feature = require('../features/stickers');
 
 module.exports = {
     name: 'update-keyword',
@@ -7,24 +8,26 @@ module.exports = {
     cooldown: 3,
     sortIndex: 0,
     usage: '[oldkeyword] [newkeyword]',
-    execute(message, args) {
-        return updateKeyword(message, args);
+    execute: async function (message, args) {
+        const oldKey = args[0];
+        const newKey = args[1];
+
+        try {
+            const sticker = await apiService.get(oldKey);
+            const newSticker = {
+                keyword: newKey,
+                url: sticker.url,
+                useCount: sticker.useCount,
+                upload: {
+                    id: sticker.upload.id,
+                    username: sticker.upload.username
+                }
+            }
+            const result = await apiService.update(sticker.id, newSticker);
+            feature.refresh();
+            return message.reply(`Updated ${sticker.keyword} to ${result.keyword}.`);
+        } catch (error) {
+            return message.reply(error.error.message);
+        }
     }
 };
-
-async function updateKeyword(message, args) {
-    const oldKey = args[0];
-    const newKey = args[1];
-    const stickerKeys = (await stickerService.getAll()).map(s => s.keyword);
-
-    if(!stickerKeys.includes(oldKey)) {
-        return message.reply(`Cannot find sticker with keyword ${oldKey}.`);
-    }
-
-    if(stickerKeys.includes(newKey)) {
-        return message.reply(`Sorry, the keyword ${newKey} is already taken.`);
-    }
-
-    await stickerService.updateKeyword(oldKey, newKey);
-    return message.reply(`Updated ${oldKey} to ${newKey}.`)
-}

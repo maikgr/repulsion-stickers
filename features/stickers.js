@@ -1,25 +1,16 @@
 const RichEmbed = require('discord.js').RichEmbed;
-const stickerService = require('../services/sticker_service.js');
 const apiService = require('../services/api-service');
 
 let stickers = [];
-let availableStickerKey;
 
-module.exports = {
-    refresh : refreshStickers,
-    get : getSticker
+module.exports.refresh = async function () {
+    stickers = await apiService.getAll();
 }
 
-async function refreshStickers(message) {
-    stickers = await stickerService.getAll();
-    availableStickerKey = stickers.map(s => s.keyword);
-    if (message) message.channel.send("[Testing phase] Any update to sticker database is now refreshed automatically, no need to do refresh command.");
-}
-
-async function getSticker(message, keyword) {
+module.exports.get = async function (message, keyword) {
     if (keyword.length < 3) return;
     try {
-        const sticker = await apiService.get(keyword);
+        const sticker = stickers.find(s => s.keyword === keyword);
         if (sticker) {
             const embed = new RichEmbed().setImage(sticker.url);
             message.channel.send({ embed: embed });
@@ -38,7 +29,7 @@ async function updateStickerCount(sticker) {
     const newSticker = {
         keyword: sticker.keyword,
         url: sticker.url,
-        useCount: sticker.useCount ? ++useCount : 1,
+        useCount: sticker.useCount ? ++sticker.useCount : 1,
         upload: {
             id: sticker.upload.id || process.env.OWNER_ID,
             username: sticker.upload.username || 'VarZ'
@@ -47,5 +38,3 @@ async function updateStickerCount(sticker) {
 
     await apiService.update(sticker.id, newSticker);
 }
-
-refreshStickers();
