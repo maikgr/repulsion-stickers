@@ -1,5 +1,5 @@
-const stickerService = require('../services/sticker_service.js');
-const validUrl = require('valid-url');
+const apiService = require('../services/api-service')
+const feature = require('../features/stickers');
 
 module.exports = {
     name: 'update-url',
@@ -8,24 +8,26 @@ module.exports = {
     cooldown: 3,
     sortIndex: 0,
     usage: '[keyword] [newurl]',
-    execute(message, args) {
-        return updateUrl(message, args);
+    execute: async function (message, args) {
+        const keyword = args[0];
+        const url = args[1];
+
+        try {
+            const sticker = await apiService.get(keyword);
+            const newSticker = {
+                keyword: sticker.keyword,
+                url: url,
+                useCount: sticker.useCount,
+                upload: {
+                    id: sticker.upload.id,
+                    username: sticker.upload.username
+                }
+            }
+            const result = await apiService.update(sticker.id, newSticker);
+            feature.refresh();
+            return message.reply(`Updated ${sticker.keyword} url to ${result.url}.`);
+        } catch (error) {
+            return message.reply(error.error.message);
+        }
     }
 };
-
-async function updateUrl(message, args) {
-    const keyword = args[0];
-    const url = args[1];
-    const stickerKeys = (await stickerService.getAll()).map(s => s.keyword);
-
-    if(!stickerKeys.includes(keyword)) {
-        return message.reply(`Cannot find sticker with keyword ${keyword}.`);
-    }
-
-    if (!validUrl.isUri(url) || url.endsWith('.jpg') || url.endsWith('.png') || url.endsWith('.gif')) {
-        return message.reply(`Incorrect url, please provide direct link url that ends with .jpg, .png, or .gif`);
-    }
-
-    await stickerService.updateImage(keyword, url);
-    return message.reply(`Updated ${keyword} image.`)
-}

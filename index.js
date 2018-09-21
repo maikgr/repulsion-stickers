@@ -15,7 +15,8 @@ for (const file of commandFiles) {
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
-    client.user.setActivity(';keyword;', { type: "WATCHING" });
+    sticker.refresh();
+    client.user.setActivity('help // https://varuzu.azurewebsites.net/', { type: "WATCHING" });
 });
 
 client.on('error', (err) => console.error(err));
@@ -38,7 +39,7 @@ function executeCommand(msg) {
     const words = msg.content.split(/ +/);
     const commandAttempt = words[1].toLowerCase();
     if (commandAttempt === 'refresh') {
-        return sticker.refresh(msg);
+        return msg.channel.send("[Testing phase] Any update to sticker database is now refreshed automatically, no need to do refresh command.");
     }
 
     const command = client.commands.get(commandAttempt);
@@ -50,11 +51,11 @@ function executeCommand(msg) {
         return msg.reply(`you don't have permission to use this command.`);
     }
 
-    if (command.args && !args.length) {
+    if (command.args && args.length !== command.usage.split(' ').length) {
         let reply = "Incorrect command usage.";
 
         if (command.usage) {
-            reply += `\nCommand syntax: \`${prefix}${commandAttempt} ${command.usage}\``;
+            reply += `\nCommand syntax: \`@Stickers#9966 ${commandAttempt} ${command.usage}\``;
         }
 
         return msg.reply(reply);

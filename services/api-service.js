@@ -2,21 +2,53 @@ const request = require('request-promise-native');
 
 const apiUrl = 'https://varuzuapi.azurewebsites.net/api/stickers/'
 
+module.exports.getAll = function () {
+    const options = {
+        method: 'GET',
+        uri: apiUrl + 'all',
+        json: true
+    }
+
+    return request(options)
+        .then((response) => {
+            return response.data;
+        })
+        .catch((error) => {
+            console.error(error);
+            throw error;
+        });
+}
+
 module.exports.get = function (keyword) {
     return request
         .get(apiUrl + 'keyword/' + keyword)
         .then((response) => {
             const json = JSON.parse(response);
             return json.data;
+        })
+        .catch((error) => {
+            console.error(error);
+            throw error;
         });
 }
 
 module.exports.search = function (query) {
-    return request
-        .get(apiUrl + 'search', { keyword: query })
+    const options = {
+        method: 'GET',
+        uri: apiUrl + 'search',
+        qs: {
+            keyword: query
+        },
+        json: true
+    };
+
+    return request(options)
         .then((response) => {
-            const json = JSON.parse(response);
-            return json.data;
+            return response.data;
+        })
+        .catch((error) => {
+            console.error(error);
+            throw error;
         });
 }
 
@@ -34,6 +66,7 @@ module.exports.update = function (id, sticker) {
         })
         .catch((error) => {
             console.error(error);
+            throw error;
         });
 }
 
@@ -48,6 +81,10 @@ module.exports.add = function (sticker) {
     return request(options)
         .then((response) => {
             return response.data;
+        })
+        .catch((error) => {
+            console.error(error);
+            throw error;
         });
 }
 
