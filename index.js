@@ -39,7 +39,7 @@ function executeCommand(msg) {
     const words = msg.content.split(/ +/);
     const commandAttempt = words[1].toLowerCase();
     if (commandAttempt === 'refresh') {
-        return msg.channel.send("[Testing phase] Any update to sticker database is now refreshed automatically, no need to do refresh command.");
+        return msg.channel.send("Any update to sticker database is now refreshed automatically, no need to do refresh command.");
     }
 
     const command = client.commands.get(commandAttempt);
@@ -55,7 +55,7 @@ function executeCommand(msg) {
         let reply = "Incorrect command usage.";
 
         if (command.usage) {
-            reply += `\nCommand syntax: \`@Stickers#9966 ${commandAttempt} ${command.usage}\``;
+            reply += `\nCommand syntax: \`@Stickers#9966 ${commandAttempt} ${command.usage} ${command.optional}\``;
         }
 
         return msg.reply(reply);
