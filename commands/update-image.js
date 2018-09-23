@@ -19,7 +19,7 @@ module.exports = {
             const newSticker = {
                 keyword: sticker.keyword,
                 url: url,
-                useCount: sticker.useCount,
+                useCount: sticker.useCount || 0,
                 upload: {
                     id: sticker.upload.id,
                     username: sticker.upload.username
@@ -29,7 +29,7 @@ module.exports = {
             feature.refresh();
             return message.reply(`Updated ${sticker.keyword} image.`);
         } catch (error) {
-            return message.reply(error.error.message);
+            return message.reply(error.error.message || error.statusMessage);
         }
     }
 };

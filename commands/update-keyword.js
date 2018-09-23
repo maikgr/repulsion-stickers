@@ -17,7 +17,7 @@ module.exports = {
             const newSticker = {
                 keyword: newKey,
                 url: sticker.url,
-                useCount: sticker.useCount,
+                useCount: sticker.useCount || 0,
                 upload: {
                     id: sticker.upload.id,
                     username: sticker.upload.username
