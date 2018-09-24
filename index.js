@@ -16,7 +16,7 @@ for (const file of commandFiles) {
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
     sticker.refresh();
-    client.user.setActivity('help // https://varuzu.azurewebsites.net/', { type: "WATCHING" });
+    client.user.setActivity('@me help // v1.14.1', { type: "WATCHING" });
 });
 
 client.on('error', (err) => console.error(err));
@@ -51,7 +51,7 @@ function executeCommand(msg) {
         return msg.reply(`you don't have permission to use this command.`);
     }
 
-    if (command.args && args.length !== command.usage.split(' ').length) {
+    if (command.args && args.length < command.usage.split(' ').length) {
         let reply = "Incorrect command usage.";
 
         if (command.usage) {
