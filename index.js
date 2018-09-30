@@ -1,5 +1,4 @@
 const Discord = require('discord.js');
-const S = require('string');
 const fs = require('fs');
 const sticker = require('./features/stickers.js');
 
@@ -16,7 +15,7 @@ for (const file of commandFiles) {
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
     sticker.refresh();
-    client.user.setActivity('@me help // v1.14.1', { type: "WATCHING" });
+    client.user.setActivity('@me help [v1.14.2]', { type: "LISTENING" });
 });
 
 client.on('error', (err) => console.error(err));
@@ -26,7 +25,10 @@ client.on('message', (msg) => {
         return executeCommand(msg);
     }
 
-    const stickerKeyword = S(msg.content).between(keyLetter, keyLetter).s;
+    const stickerKeyword = msg.content
+                            .substring(msg.content.indexOf(keyLetter) + 1, msg.content.lastIndexOf(keyLetter))
+                            .replace(keyLetter, '')
+                            .replace(/ +/, '');
     if (stickerKeyword !== '' && !stickerKeyword.includes(' ') && !msg.author.bot) {
         return executeSticker(msg, stickerKeyword);
     }
@@ -36,7 +38,7 @@ client.on('message', (msg) => {
 client.login(process.env.BOT_TOKEN);
 
 function executeCommand(msg) {
-    const words = msg.content.split(/ +/);
+    const words = msg.content.replace(keyLetter, '').split(/ +/);
     const commandAttempt = words[1].toLowerCase();
     if (commandAttempt === 'refresh') {
         return msg.channel.send("Any update to sticker database is now refreshed automatically, no need to do refresh command.");
