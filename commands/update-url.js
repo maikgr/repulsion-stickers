@@ -20,6 +20,7 @@ module.exports = {
                 useCount: sticker.useCount || 0,
                 upload: {
                     id: sticker.upload.id,
+                    date: sticker.upload.date,
                     username: sticker.upload.username
                 }
             }

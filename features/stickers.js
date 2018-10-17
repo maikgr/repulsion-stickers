@@ -32,6 +32,7 @@ async function updateStickerCount(sticker) {
         useCount: sticker.useCount ? ++sticker.useCount : 1,
         upload: {
             id: sticker.upload.id || process.env.OWNER_ID,
+            date: sticker.upload.date || new Date(2018, 8, 28),
             username: sticker.upload.username || 'VarZ'
         }
     }
