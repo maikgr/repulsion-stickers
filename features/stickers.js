@@ -7,10 +7,16 @@ module.exports.refresh = async function () {
     stickers = await apiService.getAll();
 }
 
-module.exports.get = async function (message, keyword) {
+module.exports.get = function (message, keyword) {
     if (keyword.length < 3) return;
     try {
-        const sticker = stickers.find(s => s.keyword === keyword);
+        let sticker;
+        if (keyword.includes(' ')) {
+            sticker = getRandomSticker(keyword);
+        } else {
+            sticker = getExactSticker(keyword);
+        }
+        
         if (sticker) {
             const embed = new RichEmbed().setImage(sticker.url);
             message.channel.send({ embed: embed });
@@ -23,6 +29,17 @@ module.exports.get = async function (message, keyword) {
         console.error(error);
         return;
     }
+}
+
+function getExactSticker (keyword) {
+    return stickers.find(s => s.keyword === keyword);
+}
+
+function getRandomSticker (keyword) {
+    keyword = keyword.replace(' ', '');
+    const stickerList = stickers.find(s => s.keyword.includes(keyword));
+    const randIndex = Math.floor(Math.random() * stickerList.length);
+    return stickerList[randIndex];
 }
 
 async function updateStickerCount(sticker) {
