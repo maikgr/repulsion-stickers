@@ -25,7 +25,7 @@ module.exports.get = function (message, keyword) {
         return;
     }
     catch (error) {
-        let message = error.error.message;
+        let message = error.error && error.error.message;
         if (message) {
             console.error(message);
         } else {
