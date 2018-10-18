@@ -12,7 +12,7 @@ module.exports.get = function (message, keyword) {
     try {
         let sticker;
         if (keyword.endsWith('?')) {
-            sticker = getRandomSticker(keyword);
+            sticker = getRandomSticker(keyword.replace('?', ''));
         } else {
             sticker = getExactSticker(keyword);
         }
@@ -41,7 +41,7 @@ function getExactSticker (keyword) {
 
 function getRandomSticker (keyword) {
     keyword = keyword.replace(' ', '');
-    const stickerList = stickers.find(s => s.keyword.includes(keyword));
+    const stickerList = stickers.filter(s => s.keyword.includes(keyword));
     const randIndex = Math.floor(Math.random() * stickerList.length);
     return stickerList[randIndex];
 }
