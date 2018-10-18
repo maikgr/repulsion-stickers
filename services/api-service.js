@@ -14,7 +14,6 @@ module.exports.getAll = function () {
             return response.data;
         })
         .catch((error) => {
-            console.error(error);
             throw error;
         });
 }
@@ -27,7 +26,6 @@ module.exports.get = function (keyword) {
             return json.data;
         })
         .catch((error) => {
-            console.error(error);
             throw error;
         });
 }
@@ -47,7 +45,6 @@ module.exports.search = function (query) {
             return response.data;
         })
         .catch((error) => {
-            console.error(error);
             throw error;
         });
 }
@@ -65,7 +62,6 @@ module.exports.update = function (id, sticker) {
             return response.data;
         })
         .catch((error) => {
-            console.error(error);
             throw error;
         });
 }
@@ -83,7 +79,6 @@ module.exports.add = function (sticker) {
             return response.data;
         })
         .catch((error) => {
-            console.error(error);
             throw error;
         });
 }

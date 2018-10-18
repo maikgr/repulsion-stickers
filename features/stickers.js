@@ -11,7 +11,7 @@ module.exports.get = function (message, keyword) {
     if (keyword.length < 3) return;
     try {
         let sticker;
-        if (keyword.includes(' ')) {
+        if (keyword.endsWith('?')) {
             sticker = getRandomSticker(keyword);
         } else {
             sticker = getExactSticker(keyword);
@@ -25,8 +25,12 @@ module.exports.get = function (message, keyword) {
         return;
     }
     catch (error) {
-        console.log('[sticker.js]')
-        console.error(error);
+        let message = error.error.message;
+        if (message) {
+            console.error(message);
+        } else {
+            console.error(error);
+        }
         return;
     }
 }

@@ -10,7 +10,7 @@ module.exports = {
     usage: '[oldkeyword] [newkeyword]',
     execute: async function (message, args) {
         const oldKey = args[0];
-        const newKey = args[1];
+        const newKey = args[1].replace('?', '');
 
         try {
             const sticker = await apiService.get(oldKey);

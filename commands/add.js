@@ -10,7 +10,7 @@ module.exports = {
     usage: '[keyword]',
     optional: '[url or attachment]',
     execute: async function (message, args) {
-        const keyword = args[0];
+        const keyword = args[0].replace('?', '');
         let attachment = message.attachments.first();
         let url = args[1].toLowerCase() || attachment.url.toLowerCase();
 
