@@ -13,7 +13,7 @@ module.exports = {
         const keyword = args[0];
         const attachment = message.attachments.first();
         let url = attachment.url;
-
+        url = url.toLowerCase();
         try {
             const sticker = await apiService.get(keyword);
             const newSticker = {

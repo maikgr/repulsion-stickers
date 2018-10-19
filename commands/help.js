@@ -9,7 +9,7 @@ module.exports = {
     usage: '',
     execute: async function (message, args) {
         const embed = new RichEmbed();
-        embed.setFooter('Sticker Bot version 2.0')
+        embed.setFooter('Sticker Bot version 2.0.1')
             .setDescription('To use a sticker, simply type ;stickerkeyword;\nTo see the complete list of available stickers, please visit https://varuzu.azurewebsites.net/')
             .addField('@me add `[keyword]` `[url or attachment]`', 'Add a new sticker.')
             .addField('@me search `[query]`', 'Search for stickers keyword that matches the query.')
