@@ -10,7 +10,7 @@ module.exports = {
     usage: '[keyword] [newurl]',
     execute: async function (message, args) {
         const keyword = args[0];
-        const url = args[1].toLowerCase();
+        let url = args[1].toLowerCase();
         
         try {
             const sticker = await apiService.get(keyword);
