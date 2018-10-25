@@ -15,7 +15,7 @@ for (const file of commandFiles) {
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
     sticker.refresh();
-    client.user.setActivity('@me help [v2.0.2]', { type: "LISTENING" });
+    client.user.setActivity('@me help [v2.1.0]', { type: "LISTENING" });
 });
 
 client.on('error', (err) => console.error(err));
@@ -57,7 +57,7 @@ function executeCommand(msg) {
         let reply = "Incorrect command usage.";
 
         if (command.usage) {
-            reply += `\nCommand syntax: \`@Stickers#9966 ${commandAttempt} ${command.usage} ${command.optional}\``;
+            reply += `\nCommand syntax: \`@me ${commandAttempt} ${command.usage} ${command.optional}\``;
         }
 
         return msg.reply(reply);

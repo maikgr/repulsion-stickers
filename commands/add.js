@@ -1,5 +1,6 @@
 const apiService = require('../services/api-service');
 const feature = require('../features/stickers');
+const uploadService = require('../services/upload-service');
 
 module.exports = {
     name: 'add',
@@ -11,6 +12,7 @@ module.exports = {
     optional: '[url or attachment]',
     execute: async function (message, args) {
         const keyword = args[0].replace('?', '');
+        const author = message.author;
         let attachment = message.attachments.first();
         let url = args[1] || attachment.url;
         url = url.toLowerCase();
@@ -18,23 +20,29 @@ module.exports = {
             return message.reply(' please provide direct link url that ends with `.jpg`, `.png`, or `.gif`');
         }
         
+        message = await message.channel.send(`Adding new image with keyword ${keyword}...`)
+        const mirror = await uploadService.upload(url);
         const newSticker = {
             keyword: keyword,
-            url: url,
+            url: mirror.link,
             upload: {
-                id: message.author.id,
+                id: author.id,
                 date: new Date(),
-                username: message.author.username
+                username: author.username
             }
         };
 
         try {
             const result = await apiService.add(newSticker);
             feature.refresh();
-            message.channel.send(`Added a new sticker with keyword ${result.keyword}`);
+            message.edit(`Added a new sticker with keyword ${result.keyword}`);
             return;
         } catch (error) {
-            return message.reply(error.error.message);
+            uploadService.remove(mirror.hash);
+            if (error.error.code === 400) {
+                return message.edit(`${keyword} already exists.`)
+            }
+            return message.edit(`Cannot proceed, something went wrong.`);
         }
     }
 };
