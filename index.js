@@ -15,7 +15,7 @@ for (const file of commandFiles) {
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
     sticker.refresh();
-    client.user.setActivity('@me help [v2.1.0]', { type: "LISTENING" });
+    client.user.setActivity('@me help [v2.1.1]', { type: "LISTENING" });
 });
 
 client.on('error', (err) => console.error(err));

@@ -20,19 +20,19 @@ module.exports = {
             return message.reply(' please provide direct link url that ends with `.jpg`, `.png`, or `.gif`');
         }
         
-        message = await message.channel.send(`Adding new image with keyword ${keyword}...`)
-        const mirror = await uploadService.upload(url);
-        const newSticker = {
-            keyword: keyword,
-            url: mirror.link,
-            upload: {
-                id: author.id,
-                date: new Date(),
-                username: author.username
-            }
-        };
-
         try {
+            message = await message.channel.send(`Adding new image with keyword ${keyword}...`)
+            const mirror = await uploadService.upload(url);
+            const newSticker = {
+                keyword: keyword,
+                url: mirror.link,
+                upload: {
+                    id: author.id,
+                    date: new Date(),
+                    username: author.username
+                }
+            };
+
             const result = await apiService.add(newSticker);
             feature.refresh();
             message.edit(`Added a new sticker with keyword ${result.keyword}`);

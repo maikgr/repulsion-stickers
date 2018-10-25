@@ -20,9 +20,9 @@ module.exports = {
             return message.reply(' please provide direct link url that ends with `.jpg`, `.png`, or `.gif`');
         }
 
-        message = await message.channel.send(`Updating an image with keyword ${keyword}...`)
-        const mirror = await uploadService.upload(url);
         try {
+            message = await message.channel.send(`Updating an image with keyword ${keyword}...`)
+            const mirror = await uploadService.upload(url);
             const sticker = await apiService.get(keyword);
             const newSticker = {
                 keyword: sticker.keyword,
@@ -34,7 +34,7 @@ module.exports = {
                     username: sticker.upload.username
                 }
             }
-            const result = await apiService.update(sticker.id, newSticker);
+            await apiService.update(sticker.id, newSticker);
             feature.refresh();
             return message.edit(`Updated ${sticker.keyword} image.`);
         } catch (error) {

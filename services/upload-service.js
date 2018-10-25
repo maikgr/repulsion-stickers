@@ -20,6 +20,7 @@ module.exports.upload = async function(url) {
     }
   } catch (error) {
     console.error(error);
+    throw error;
   }
 }
 
@@ -30,5 +31,6 @@ module.exports.remove = async function (hash) {
     }
   } catch (error) {
     console.error(error);
+    throw error;
   }
 }
