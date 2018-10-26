@@ -15,12 +15,12 @@ module.exports.upload = async function(url) {
         hash: response.data.deletehash
       }
     }
-    return {
-      link: url
-    }
   } catch (error) {
     console.error(error);
-    throw error;
+  }
+
+  return {
+    link: url
   }
 }
 

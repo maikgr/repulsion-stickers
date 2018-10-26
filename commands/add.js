@@ -1,6 +1,8 @@
 const apiService = require('../services/api-service');
 const feature = require('../features/stickers');
 const uploadService = require('../services/upload-service');
+const urlValidator = require('../services/url-validator-service');
+const messageParser = require('../services/message-parser');
 
 module.exports = {
     name: 'add',
@@ -11,25 +13,26 @@ module.exports = {
     usage: '[keyword]',
     optional: '[url or attachment]',
     execute: async function (message, args) {
-        const keyword = args[0].replace('?', '');
-        const author = message.author;
-        let attachment = message.attachments.first();
-        let url = args[1] || attachment.url;
-        url = url.toLowerCase();
-        if (!url.endsWith('.jpg') && !url.endsWith('.png') && !url.endsWith('.gif')) {
+        let request = messageParser.parse(message, args);
+        if (!urlValidator.validate(request.url)) {
             return message.reply(' please provide direct link url that ends with `.jpg`, `.png`, or `.gif`');
         }
-        
+        let deleteHash;
         try {
-            message = await message.channel.send(`Adding new image with keyword ${keyword}...`)
-            const mirror = await uploadService.upload(url);
+            message = await message.channel.send(`Adding new image with keyword ${request.keyword}...`);
+            if (request.url.includes('discordapp')) {
+                const imgurData = await uploadService.upload(request.url);
+                request.url = imgurData.link;
+                deleteHash = imgurData.hash;
+            }
+
             const newSticker = {
-                keyword: keyword,
-                url: mirror.link,
+                keyword: request.keyword,
+                url: request.url,
                 upload: {
-                    id: author.id,
+                    id: request.author.id,
                     date: new Date(),
-                    username: author.username
+                    username: request.author.username
                 }
             };
 
@@ -38,9 +41,9 @@ module.exports = {
             message.edit(`Added a new sticker with keyword ${result.keyword}`);
             return;
         } catch (error) {
-            uploadService.remove(mirror.hash);
+            await uploadService.remove(deleteHash);
             if (error.error.code === 400) {
-                return message.edit(`${keyword} already exists.`)
+                return message.edit(`${request.keyword} already exists.`)
             }
             return message.edit(`Cannot proceed, something went wrong.`);
         }

@@ -1,6 +1,8 @@
 const apiService = require('../services/api-service')
 const feature = require('../features/stickers');
 const uploadService = require('../services/upload-service');
+const urlValidator = require('../services/url-validator-service');
+const messageParser = require('../services/message-parser');
 
 module.exports = {
     name: 'update-image',
@@ -11,22 +13,25 @@ module.exports = {
     usage: '[keyword]',
     optional: '[attachment]',
     execute: async function (message, args) {
-        const keyword = args[0];
-        const attachment = message.attachments.first();
-        let url = attachment.url;
-        url = url.toLowerCase();
+        let request = messageParser.parse(message, args);
 
-        if (!url.endsWith('.jpg') && !url.endsWith('.png') && !url.endsWith('.gif')) {
+        if (!urlValidator.validate(request.url)) {
             return message.reply(' please provide direct link url that ends with `.jpg`, `.png`, or `.gif`');
         }
-
+        
+        let deleteHash;
         try {
-            message = await message.channel.send(`Updating an image with keyword ${keyword}...`)
-            const mirror = await uploadService.upload(url);
-            const sticker = await apiService.get(keyword);
+            message = await message.channel.send(`Updating an image with keyword ${request.keyword}...`)
+            if (request.url.includes('discordapp')) {
+                const imgurData = await uploadService.upload(request.url);
+                request.url = imgurData.link;
+                deleteHash = imgurData.hash;
+            }
+
+            const sticker = await apiService.get(request.keyword);
             const newSticker = {
                 keyword: sticker.keyword,
-                url: mirror.link,
+                url: request.url,
                 useCount: sticker.useCount || 0,
                 upload: {
                     id: sticker.upload.id,
@@ -38,7 +43,7 @@ module.exports = {
             feature.refresh();
             return message.edit(`Updated ${sticker.keyword} image.`);
         } catch (error) {
-            uploadService.remove(mirror.hash);
+            uploadService.remove(deleteHash);
             return message.edit(`Cannot proceed, something went wrong.`);
         }
     }
