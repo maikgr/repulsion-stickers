@@ -49,3 +49,5 @@ module.exports = {
         }
     }
 };
+
+console.log(`Loaded command add`);

@@ -48,3 +48,4 @@ module.exports = {
         }
     }
 };
+console.log(`Loaded command update-image`);

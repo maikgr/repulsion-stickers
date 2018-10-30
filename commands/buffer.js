@@ -27,3 +27,5 @@ module.exports.execute = async function (message, args) {
             });
     });
 }
+
+console.log(`Loaded command buffer`);

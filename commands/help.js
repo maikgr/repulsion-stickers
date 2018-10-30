@@ -21,3 +21,4 @@ module.exports = {
         message.channel.send({embed: embed});
     }
 };
+console.log(`Loaded command help`);

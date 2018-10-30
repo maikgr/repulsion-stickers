@@ -18,7 +18,9 @@ client.on('ready', () => {
     client.user.setActivity('@me help [v2.1.3]', { type: "LISTENING" });
 });
 
-client.on('error', (err) => console.error(err));
+client.on('error', (err) => {
+    console.error(err)}
+);
 
 client.on('message', (msg) => {
     if (msg.author.id !== process.env.OWNER_ID) return;
