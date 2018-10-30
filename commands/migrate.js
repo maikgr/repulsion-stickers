@@ -1,5 +1,5 @@
 const Attachment = require('discord.js').Attachment;
-const stickerFeature = require('../features/stickers');
+const apiService = require('../services/api-service');
 const updateUrl = require('./update-url');
 
 module.exports = {
@@ -9,8 +9,8 @@ module.exports = {
     cooldown: 3,
     sortIndex: 0,
     usage: '[keyword]',
-    execute: function (message, args) {
-        const sticker = stickerFeature.getExactSticker(args[0]);
+    execute: async function (message, args) {
+        const sticker = await apiService.get(args[0]);
         if (sticker) {
             message.channel.send(`Migrating ${sticker.keyword} to discord...`);
             message.channel.send(new Attachment(sticker.url))

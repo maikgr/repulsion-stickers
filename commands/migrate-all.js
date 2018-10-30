@@ -1,5 +1,5 @@
 const Attachment = require('discord.js').Attachment;
-const stickerFeature = require('../features/stickers');
+const apiService = require('../services/api-service');
 const updateUrl = require('./update-url');
 
 module.exports = {
@@ -9,9 +9,9 @@ module.exports = {
     cooldown: 3,
     sortIndex: 0,
     usage: '',
-    execute: function (message, args) {
-        let stickers = stickerFeature.stickers;
-        stickers = stickers.filter(s => s.url.includes('imgur') && s.useCount && s.useCount > 0);
+    execute: async function (message, args) {
+        let stickers = await apiService.getAll();
+        stickers = stickers.filter(s => s.url.includes('imgur') && s.useCount > 0);
 
         if (stickers && stickers.length > 0) {
             for (let i = 0; i < stickers.length; ++i) {
