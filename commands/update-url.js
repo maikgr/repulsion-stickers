@@ -10,7 +10,7 @@ module.exports = {
     usage: '[keyword] [newurl]',
     execute: async function (message, args) {
         const keyword = args[0];
-        let url = args[1].toLowerCase();
+        let url = args[1];
         
         try {
             const sticker = await apiService.get(keyword);
@@ -26,9 +26,9 @@ module.exports = {
             }
             const result = await apiService.update(sticker.id, newSticker);
             feature.refresh();
-            return message.reply(`Updated ${sticker.keyword} url to ${result.url}.`);
+            return message.channel.send(`Updated ${sticker.keyword} url to ${result.url}.`);
         } catch (error) {
-            return message.reply(error.error.message);
+            return message.channel.send(error.error.message);
         }
     }
 };

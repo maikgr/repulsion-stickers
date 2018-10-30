@@ -14,11 +14,11 @@ module.exports = {
         if (sticker) {
             message.channel.send(`Migrating ${sticker.keyword} to discord...`);
             message.channel.send(new Attachment(sticker.url))
-                .then(async (msg) => {
+                .then((msg) => {
                     updateUrl.execute(msg, [sticker.keyword, msg.attachments.first().url ])
                 })
                 .catch((error) => {
-                    msg.channel.send('Migration failed.');
+                    message.channel.send('Migration failed.');
                     console.error(error);
                 })
         } else {
