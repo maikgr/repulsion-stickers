@@ -3,11 +3,11 @@ const apiService = require('../services/api-service');
 
 let stickers = [];
 
-module.exports.refresh = async function () {
+async function refresh () {
     stickers = await apiService.getAll();
 }
 
-module.exports.get = function (message, keyword) {
+function get (message, keyword) {
     if (keyword.length < 3) return;
     try {
         let sticker;
@@ -35,11 +35,11 @@ module.exports.get = function (message, keyword) {
     }
 }
 
-module.exports.getExactSticker = function (keyword) {
+function getExactSticker (keyword) {
     return stickers.find(s => s.keyword === keyword);
 }
 
-module.exports.getRandomSticker = function (keyword) {
+function getRandomSticker (keyword) {
     keyword = keyword.replace(' ', '');
     const stickerList = stickers.filter(s => s.keyword.includes(keyword));
     const randIndex = Math.floor(Math.random() * stickerList.length);
@@ -59,4 +59,11 @@ async function updateStickerCount(sticker) {
     }
 
     await apiService.update(sticker.id, newSticker);
+}
+
+module.exports = {
+    refresh: refresh,
+    get: get,
+    getExactSticker: getExactSticker,
+    getRandomSticker: getRandomSticker
 }
