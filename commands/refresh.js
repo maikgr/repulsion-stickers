@@ -10,7 +10,7 @@ module.exports = {
     optional: ''
 }
 
-module.exports.execute = function (message, args) {
+module.exports.execute = async function (message, args) {
     await stickers.refresh();
     message.channel.send('Done.')
 }
