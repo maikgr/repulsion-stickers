@@ -20,11 +20,11 @@ module.exports = {
         let deleteHash;
         try {
             message = await message.channel.send(`Adding new image with keyword ${request.keyword}...`);
-            if (request.url.includes('discordapp')) {
-                const imgurData = await uploadService.upload(request.url);
-                request.url = imgurData.link;
-                deleteHash = imgurData.hash;
-            }
+            // if (request.url.includes('discordapp')) {
+            //     const imgurData = await uploadService.upload(request.url);
+            //     request.url = imgurData.link;
+            //     deleteHash = imgurData.hash;
+            // }
 
             const newSticker = {
                 keyword: request.keyword,

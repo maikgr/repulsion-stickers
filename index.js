@@ -15,12 +15,13 @@ for (const file of commandFiles) {
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
     sticker.refresh();
-    client.user.setActivity('@me help [v2.1.2]', { type: "LISTENING" });
+    client.user.setActivity('@me help [v2.1.3]', { type: "LISTENING" });
 });
 
 client.on('error', (err) => console.error(err));
 
 client.on('message', (msg) => {
+    if (msg.author.id !== process.env.OWNER_ID) return;
     if (msg.isMemberMentioned(client.user)) {
         return executeCommand(msg);
     }

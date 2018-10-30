@@ -35,11 +35,11 @@ module.exports.get = function (message, keyword) {
     }
 }
 
-function getExactSticker (keyword) {
+module.exports.getExactSticker = function (keyword) {
     return stickers.find(s => s.keyword === keyword);
 }
 
-function getRandomSticker (keyword) {
+module.exports.getRandomSticker = function (keyword) {
     keyword = keyword.replace(' ', '');
     const stickerList = stickers.filter(s => s.keyword.includes(keyword));
     const randIndex = Math.floor(Math.random() * stickerList.length);
