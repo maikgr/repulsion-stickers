@@ -13,7 +13,7 @@ module.exports = {
         let stickers = stickerFeature.stickers;
         stickers = stickers.filter(s => s.url.includes('imgur') && s.useCount && s.useCount > 0);
 
-        if (stickers) {
+        if (stickers && stickers.length > 0) {
             for (let i = 0; i < stickers.length; ++i) {
                 const sticker = stickers[i];
                 message.channel.send(`Migrating ${sticker.keyword} to discord...`);
