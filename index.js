@@ -15,7 +15,7 @@ for (const file of commandFiles) {
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
     sticker.refresh();
-    client.user.setActivity('@me help [v2.1.3]', { type: "LISTENING" });
+    client.user.setActivity('@me help [v2.2]', { type: "LISTENING" });
 });
 
 client.on('error', (err) => {
@@ -31,7 +31,8 @@ client.on('message', (msg) => {
     const stickerKeyword = msg.content
                             .substring(msg.content.indexOf(keyLetter) + 1, msg.content.lastIndexOf(keyLetter))
                             .replace(keyLetter, '')
-                            .replace(/ +/, '');
+                            .replace(/ +/, '')
+                            .toLowerCase();
     if (stickerKeyword !== '' && !stickerKeyword.includes(' ') && !msg.author.bot) {
         return executeSticker(msg, stickerKeyword);
     }
@@ -43,9 +44,6 @@ client.login(process.env.BOT_TOKEN);
 function executeCommand(msg) {
     const words = msg.content.replace(keyLetter, '').split(/ +/);
     const commandAttempt = words[1].toLowerCase();
-    if (commandAttempt === 'refresh') {
-        return msg.channel.send("Any update to sticker database is now refreshed automatically, no need to do refresh command.");
-    }
 
     const command = client.commands.get(commandAttempt);
     const args = words.slice(2);

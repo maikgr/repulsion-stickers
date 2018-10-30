@@ -64,6 +64,7 @@ async function updateStickerCount(sticker) {
 module.exports = {
     refresh: refresh,
     get: get,
+    stickers: stickers,
     getExactSticker: getExactSticker,
     getRandomSticker: getRandomSticker
 }
