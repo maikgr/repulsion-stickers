@@ -23,7 +23,7 @@ client.on('error', (err) => {
 );
 
 client.on('message', (msg) => {
-    if (msg.author.id !== process.env.OWNER_ID) return;
+    // if (msg.author.id !== process.env.OWNER_ID) return;
     if (msg.isMemberMentioned(client.user)) {
         return executeCommand(msg);
     }
