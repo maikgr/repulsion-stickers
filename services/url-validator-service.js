@@ -1,4 +1,4 @@
-const supportedExt = ['jpg', 'png', 'gif']
+const supportedExt = ['jpg', 'png', 'gif', 'jpeg']
 
 module.exports.validate = function (url) {
   const ext = url.slice(-3).toLowerCase();
@@ -8,3 +8,5 @@ module.exports.validate = function (url) {
 
   return true;
 }
+
+module.exports.extensions = supportedExt;

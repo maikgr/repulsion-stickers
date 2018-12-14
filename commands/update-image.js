@@ -16,7 +16,7 @@ module.exports = {
         let request = messageParser.parse(message, args);
 
         if (!urlValidator.validate(request.url)) {
-            return message.reply(' please provide direct link url that ends with `.jpg`, `.png`, or `.gif`');
+            return message.reply($` please provide direct link url that ends with \`${urlValidator.extensions.join('\`, \`')}\``);
         }
         
         let deleteHash;
