@@ -24,13 +24,14 @@ client.on('error', (err) => {
 
 client.on('message', (msg) => {
     // if (msg.author.id !== process.env.OWNER_ID) return;
-    if (msg.isMemberMentioned(client.user)) {
+    if (msg.isMemberMentioned(client.user) || !msg.content.includes(';')) {
         return executeCommand(msg);
     }
 
     const stickerKeyword = msg.content
-                            .substring(msg.content.indexOf(keyLetter) + 1)
-                            .substring(0, msg.content.indexOf(' '))
+                            .substring(msg.content.indexOf(keyLetter) + 1, msg.content.lastIndexOf(keyLetter))
+                            .replace(keyLetter, '')
+                            .replace(/ +/, '')
                             .toLowerCase();
     if (stickerKeyword !== '' && !stickerKeyword.includes(' ') && !msg.author.bot) {
         return executeSticker(msg, stickerKeyword);
