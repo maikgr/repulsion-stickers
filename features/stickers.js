@@ -8,7 +8,7 @@ async function refresh () {
 }
 
 function get (message, keyword) {
-    if (keyword.length < 3) return;
+    if (keyword.length < 2) return;
     try {
         let sticker;
         if (keyword.endsWith('?')) {

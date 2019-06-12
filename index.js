@@ -29,9 +29,8 @@ client.on('message', (msg) => {
     }
 
     const stickerKeyword = msg.content
-                            .substring(msg.content.indexOf(keyLetter) + 1, msg.content.lastIndexOf(keyLetter))
-                            .replace(keyLetter, '')
-                            .replace(/ +/, '')
+                            .substring(msg.content.indexOf(keyLetter) + 1)
+                            .substring(0, msg.content.indexOf(' '))
                             .toLowerCase();
     if (stickerKeyword !== '' && !stickerKeyword.includes(' ') && !msg.author.bot) {
         return executeSticker(msg, stickerKeyword);
