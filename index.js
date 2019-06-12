@@ -23,16 +23,17 @@ client.on('error', (err) => {
 );
 
 client.on('message', (msg) => {
-    // if (msg.author.id !== process.env.OWNER_ID) return;
-    if (msg.isMemberMentioned(client.user) || !msg.content.includes(';')) {
+    if (!msg.content.includes(';')) return;
+    if (msg.isMemberMentioned(client.user)) {
         return executeCommand(msg);
     }
 
-    const stickerKeyword = msg.content
-                            .substring(msg.content.indexOf(keyLetter) + 1, msg.content.lastIndexOf(keyLetter))
-                            .replace(keyLetter, '')
-                            .replace(/ +/, '')
+    let stickerKeyword = msg.content
+                            .split(keyLetter)[1]
+                            .replace(";", "")
+                            .split(' ')[0]
                             .toLowerCase();
+
     if (stickerKeyword !== '' && !stickerKeyword.includes(' ') && !msg.author.bot) {
         return executeSticker(msg, stickerKeyword);
     }
