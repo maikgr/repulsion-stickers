@@ -9,7 +9,7 @@ module.exports = {
     usage: '',
     execute: async function (message, args) {
         const embed = new RichEmbed();
-        embed.setFooter('Sticker Bot version 2.2.6')
+        embed.setFooter('Sticker Bot version ' + process.env.VERSION)
             .setDescription('To use a sticker, simply type `;keyword`, or `;keyword?` to use a random sticker')
             .addField('@me add `[keyword]` `[url or attachment]`', 'Add a new sticker.')
             .addField('@me search `[query]`', 'Search for stickers keyword that matches the query.')
