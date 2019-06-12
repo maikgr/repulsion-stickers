@@ -23,10 +23,11 @@ client.on('error', (err) => {
 );
 
 client.on('message', (msg) => {
-    if (!msg.content.includes(';')) return;
     if (msg.isMemberMentioned(client.user)) {
         return executeCommand(msg);
     }
+    
+    if (!msg.content.includes(';')) return;
 
     let stickerKeyword = msg.content
                             .split(keyLetter)[1]
