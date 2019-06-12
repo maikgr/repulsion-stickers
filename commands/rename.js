@@ -1,22 +1,23 @@
-const apiService = require('../services/api-service')
+const apiService = require('../services/api-service');
 const feature = require('../features/stickers');
 
 module.exports = {
-    name: 'update-url',
+    name: 'rename',
     args: true,
     ownerOnly: false,
     cooldown: 3,
     sortIndex: 0,
-    usage: '[keyword] [newurl]',
+    usage: '[oldkeyword] [newkeyword]',
     execute: async function (message, args) {
-        const keyword = args[0];
-        let url = args[1];
-        
+        const oldKey = args[0];
+        const newKey = args[1].replace('?', '');
+
         try {
-            const sticker = await apiService.get(keyword);
+            message = await message.channel.send(`Connecting to API...`);
+            const sticker = await apiService.get(oldKey);
             const newSticker = {
-                keyword: sticker.keyword,
-                url: url,
+                keyword: newKey,
+                url: sticker.url,
                 useCount: sticker.useCount || 0,
                 upload: {
                     id: sticker.upload.id,
@@ -26,10 +27,10 @@ module.exports = {
             }
             const result = await apiService.update(sticker.id, newSticker);
             feature.refresh();
-            return message.channel.send(`Updated ${sticker.keyword} url to ${result.url}.`);
+            return message.edit(`Updated ${sticker.keyword} to ${result.keyword}.`);
         } catch (error) {
-            return message.channel.send(error.error.message);
+            return message.edit(error.error.message);
         }
     }
 };
-console.log(`Loaded command update-url`);
+console.log(`Loaded command rename`);

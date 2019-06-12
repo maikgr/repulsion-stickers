@@ -5,7 +5,7 @@ const urlValidator = require('../services/url-validator-service');
 const messageParser = require('../services/message-parser');
 
 module.exports = {
-    name: 'update-image',
+    name: 'reimage',
     args: true,
     ownerOnly: false,
     cooldown: 3,
@@ -43,4 +43,4 @@ module.exports = {
         }
     }
 };
-console.log(`Loaded command update-image`);
+console.log(`Loaded command reimage`);

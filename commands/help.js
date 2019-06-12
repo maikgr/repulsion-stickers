@@ -9,13 +9,13 @@ module.exports = {
     usage: '',
     execute: async function (message, args) {
         const embed = new RichEmbed();
-        embed.setFooter('Sticker Bot version 2.2.2')
-            .setDescription('To use a sticker, simply type `;keyword;`, or `;keyword?;` to use a random sticker\nTo see the complete list of available stickers, please visit https://varuzu.azurewebsites.net/')
+        embed.setFooter('Sticker Bot version 2.2.6')
+            .setDescription('To use a sticker, simply type `;keyword;`, or `;keyword?;` to use a random sticker')
             .addField('@me add `[keyword]` `[url or attachment]`', 'Add a new sticker.')
             .addField('@me search `[query]`', 'Search for stickers keyword that matches the query.')
-            .addField('@me update-keyword `[keyword]` `[new keyword]`', 'Update a sticker\'s keyword.')
-            .addField('@me update-url `[keyword]` `[url]`', 'Update a sticker\'s image using an url.')
-            .addField('@me update-image `[keyword]` `[attachment]`', 'Update a sticker\'s image using an image attachment.')
+            .addField('@me rename `[keyword]` `[new keyword]`', 'Update a sticker\'s keyword.')
+            .addField('@me relink `[keyword]` `[url]`', 'Update a sticker\'s image using an url.')
+            .addField('@me reimage `[keyword]` `[attachment]`', 'Update a sticker\'s image using an image attachment.')
             .addField('@me migrate `[keyword]` (Owner)', 'Migrate imgur image to discord.')
             .addField('@me migrate-all (Owner)', 'Migrate all imgur images to discord.')
             .addField('@me cleanup (Owner)', 'Remove unused stickers.')

@@ -1,22 +1,23 @@
-const apiService = require('../services/api-service');
+const apiService = require('../services/api-service')
 const feature = require('../features/stickers');
 
 module.exports = {
-    name: 'update-keyword',
+    name: 'relink',
     args: true,
     ownerOnly: false,
     cooldown: 3,
     sortIndex: 0,
-    usage: '[oldkeyword] [newkeyword]',
+    usage: '[keyword] [newurl]',
     execute: async function (message, args) {
-        const oldKey = args[0];
-        const newKey = args[1].replace('?', '');
-
+        const keyword = args[0];
+        let url = args[1];
+        
         try {
-            const sticker = await apiService.get(oldKey);
+            message = await message.channel.send(`Connecting to API...`);
+            const sticker = await apiService.get(keyword);
             const newSticker = {
-                keyword: newKey,
-                url: sticker.url,
+                keyword: sticker.keyword,
+                url: url,
                 useCount: sticker.useCount || 0,
                 upload: {
                     id: sticker.upload.id,
@@ -26,10 +27,10 @@ module.exports = {
             }
             const result = await apiService.update(sticker.id, newSticker);
             feature.refresh();
-            return message.reply(`Updated ${sticker.keyword} to ${result.keyword}.`);
+            return message.edit(`Updated ${sticker.keyword} url to ${result.url}.`);
         } catch (error) {
-            return message.reply(error.error.message);
+            return message.edit(error.error.message);
         }
     }
 };
-console.log(`Loaded command update-keyword`);
+console.log(`Loaded command relink`);
