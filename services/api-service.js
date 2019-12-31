@@ -1,6 +1,6 @@
 const request = require('request-promise-native');
 
-const apiUrl = 'https://varuzuapi.azurewebsites.net/api/stickers/'
+const apiUrl = process.env.APIURL;
 
 module.exports.getAll = function () {
     const options = {

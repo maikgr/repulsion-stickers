@@ -15,7 +15,7 @@ for (const file of commandFiles) {
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
     sticker.refresh();
-    client.user.setActivity('@me help [v2.2.2]', { type: "LISTENING" });
+    client.user.setActivity(`@me help [v${process.env.VERSION}]`, { type: "LISTENING" });
 });
 
 client.on('error', (err) => {
@@ -23,16 +23,18 @@ client.on('error', (err) => {
 );
 
 client.on('message', (msg) => {
-    // if (msg.author.id !== process.env.OWNER_ID) return;
     if (msg.isMemberMentioned(client.user)) {
         return executeCommand(msg);
     }
+    
+    if (!msg.content.includes(';')) return;
 
-    const stickerKeyword = msg.content
-                            .substring(msg.content.indexOf(keyLetter) + 1, msg.content.lastIndexOf(keyLetter))
-                            .replace(keyLetter, '')
-                            .replace(/ +/, '')
+    let stickerKeyword = msg.content
+                            .split(keyLetter)[1]
+                            .replace(";", "")
+                            .split(' ')[0]
                             .toLowerCase();
+
     if (stickerKeyword !== '' && !stickerKeyword.includes(' ') && !msg.author.bot) {
         return executeSticker(msg, stickerKeyword);
     }

@@ -1,6 +1,6 @@
 const Attachment = require('discord.js').Attachment;
 const apiService = require('../services/api-service');
-const updateUrl = require('./update-url');
+const relink = require('./relink');
 
 module.exports = {
     name: 'migrate-all',
@@ -19,7 +19,7 @@ module.exports = {
                 message.channel.send(`Migrating ${sticker.keyword} to discord...`);
                 message.channel.send(new Attachment(sticker.url))
                     .then((msg) => {
-                        updateUrl.execute(msg, [sticker.keyword, msg.attachments.first().url ])
+                        relink.execute(msg, [sticker.keyword, msg.attachments.first().url ])
                     })
                     .catch((error) => {
                         msg.channel.send('Migration failed.');

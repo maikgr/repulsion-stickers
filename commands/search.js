@@ -12,22 +12,24 @@ module.exports = {
         const query = args[0];
 
         try {
+            message = await message.channel.send(`Connecting to API...`);
+
             let stickers = await apiService.search(query);
             const embed = new RichEmbed();
             
             if (!stickers || stickers.length === 0) {
-                return message.reply(` no stickers keyword matching ${query}.`);
+                return message.edit(` no stickers keyword matching ${query}.`);
             }
 
             if (stickers && stickers.length > 10) {
                 embed.setTitle(`Showing top 10 results matching ${query}`);
-                stickers = stickers.slice(0, 9);
+                stickers = stickers.slice(0, 10);
             }
 
             embed.setDescription(stickers.map(s => s.keyword).join('\n'));
-            return message.reply({ embed: embed });
+            return message.edit({ embed: embed });
         } catch (error) {
-            return message.reply(error.error.message || error.statusMessage);
+            return message.edit(error.error.message || error.statusMessage);
         }
     }
 };
