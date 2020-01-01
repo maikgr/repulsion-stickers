@@ -4,7 +4,18 @@ const apiService = require('../services/api-service');
 let stickers = [];
 
 async function refresh () {
-    stickers = await apiService.getAll();
+    try {
+        stickers = await apiService.getAll();
+    }
+    catch (error) {
+        let message = error.error && error.error.message;
+        if (message) {
+            console.error(message);
+        } else {
+            console.error(error);
+        }
+        return;
+    }
 }
 
 function get (message, keyword) {
