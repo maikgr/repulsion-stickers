@@ -8,13 +8,10 @@ async function refresh () {
         stickers = await apiService.getAll();
     }
     catch (error) {
-        let message = error.error && error.error.message;
-        if (message) {
-            console.error(message);
-        } else {
-            console.error(error);
+        if (error) {
+            console.error('Failed to connect to api on startup - retrying in 5 sec', error);
+            setTimeout(refresh, 5000);
         }
-        return;
     }
 }
 
