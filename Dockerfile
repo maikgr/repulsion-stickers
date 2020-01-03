@@ -8,8 +8,11 @@ WORKDIR /usr/src/bot
 COPY package.json /usr/src/bot
 RUN npm install
 
+# Install nodemon
+RUN npm install nodemon -g
+
 # Copy source files
 COPY . /usr/src/bot
 
 # Start the bot
-CMD ["node", "index.js"]
+CMD ["nodemon", "index.js"]
