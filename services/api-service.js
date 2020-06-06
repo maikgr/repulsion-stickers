@@ -19,7 +19,7 @@ module.exports.get = async (keyword) => {
         if (sticker) {
             return parseSticker(sticker);
         }
-        else throw
+        throw new Error();
     }
     catch {
         throw new Error("No sticker with keyword " + keyword + " found.");
@@ -37,7 +37,7 @@ module.exports.search = async (query) => {
         if (stickers && stickers.length) {
             return stickers.map(s => parseSticker(s));
         }
-        else throw
+        throw new Error();
     }
     catch {
         throw new Error("No sticker with keyword '" + query + "' found.");
@@ -50,7 +50,7 @@ module.exports.update = async (id, sticker) => {
         if (updatedSticker) {
             return parseSticker(updatedSticker);
         }
-        else throw
+        throw new Error();
     }
     catch {
         throw new Error("No sticker with keyword " + sticker.keyword + " found.");
