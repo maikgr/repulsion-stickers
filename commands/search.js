@@ -18,7 +18,7 @@ module.exports = {
             const embed = new RichEmbed();
             
             if (!stickers || stickers.length === 0) {
-                return message.edit(` no stickers keyword matching ${query}.`);
+                return message.edit(`No stickers with keyword ${query} found.`);
             }
 
             if (stickers && stickers.length > 10) {
@@ -29,7 +29,7 @@ module.exports = {
             embed.setDescription(stickers.map(s => s.keyword).join('\n'));
             return message.edit({ embed: embed });
         } catch (error) {
-            return message.edit(error.error.message || error.statusMessage);
+            return message.edit(error.message || error.statusMessage);
         }
     }
 };
