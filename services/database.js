@@ -12,33 +12,33 @@ db.on('connected', () => console.log('Connected to db service.'));
 db.on('disconnected', () => console.log('Disconnected from db service.'));
 
 const stickerSchema = new Schema({
-    keyword: String,
-    url: String,
-    useCount: Number,
-    buffer: Buffer,
-    upload: {
-        id: String,
-        username: String,
-        date: Date
-    }
+  keyword: String,
+  url: String,
+  useCount: Number,
+  buffer: Buffer,
+  upload: {
+    id: String,
+    username: String,
+    date: Date
+  }
 });
 
 const Sticker = mongoose.model('stickers', stickerSchema);
 
-module.exports.getAll = function () {
-    return Sticker.find().exec();
+module.exports.getAll = async function () {
+  return await Sticker.find().lean().exec();
 }
 
 module.exports.getByKeyword = function (keyword) {
-    return Sticker.findOne({ keyword: { '$regex': '^' + keyword + '$', '$options': 'i' } }).exec();
+  return Sticker.findOne({ keyword: { '$regex': '^' + keyword + '$', '$options': 'i' } }).exec();
 }
 
 module.exports.getById = function (id) {
-    return Sticker.findById(id).exec();
+  return Sticker.findById(id).exec();
 }
 
 module.exports.search = function (query) {
-    return Sticker.find({ keyword: { '$regex': query, '$options' : 'i'} }).exec();
+  return Sticker.find({ keyword: { '$regex': query, '$options' : 'i'} }).exec();
 }
 
 module.exports.add = function (keyword, url, uploaderId, uploaderUsername) {
