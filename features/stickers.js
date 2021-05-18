@@ -22,7 +22,7 @@ const execute = (message) => {
 
     // Fire and forget these async calls
     if (sticker) {
-      apiService.updateCount(sticker._id);
+      apiService.increaseUseCount(sticker);
       apiService.refreshCache();
     }
 

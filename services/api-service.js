@@ -21,12 +21,12 @@ const getRandom = (keyword) => {
   return matches[index];
 }
 
-const updateCount = (id) => console.log("update count", id);
+const increaseUseCount = async (sticker) => await database.increaseUseCount(sticker);
 
 module.exports = {
   get,
   getRandom,
-  updateCount,
+  increaseUseCount,
   refreshCache
 }
 

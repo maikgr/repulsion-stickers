@@ -11,11 +11,13 @@ db.on('error', console.error.bind(console, 'Db service connection error: '));
 db.on('connected', () => console.log('Connected to db service.'));
 db.on('disconnected', () => console.log('Disconnected from db service.'));
 
+// Deprecation update https://mongoosejs.com/docs/deprecations.html#findandmodify
+mongoose.set('useFindAndModify', false);
+
 const stickerSchema = new Schema({
   keyword: String,
   url: String,
   useCount: Number,
-  buffer: Buffer,
   upload: {
     id: String,
     username: String,
@@ -27,6 +29,10 @@ const Sticker = mongoose.model('stickers', stickerSchema);
 
 module.exports.getAll = async function () {
   return await Sticker.find().lean().exec();
+}
+
+module.exports.increaseUseCount = async function (sticker) {
+  return await Sticker.findByIdAndUpdate(sticker._id, { useCount: ++sticker.useCount }, { new: true }).lean().exec();
 }
 
 module.exports.getByKeyword = function (keyword) {
