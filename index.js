@@ -29,8 +29,10 @@ client.on('message', (msg) => {
   else if (msg.content.startsWith(keyLetter)) {
     const content = msg.content.substring(keyLetter.length);
     const sticker = stickers(content);
-    const embed = new Discord.MessageEmbed().setImage(sticker.url);
-    return msg.channel.send(embed);
+    if (sticker) {
+      const embed = new Discord.MessageEmbed().setImage(sticker.url);
+      return msg.channel.send(embed);
+    }
   }
 
   return;

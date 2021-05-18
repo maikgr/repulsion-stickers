@@ -14,15 +14,17 @@ const execute = (message) => {
   try {
     let sticker;
     if (stickerKeyword.endsWith("?")) {
-      sticker = apiService.getRandom(stickerKeyword);
+      sticker = apiService.getRandom(stickerKeyword.substring(0, stickerKeyword.length - 1));
     }
     else {
       sticker = apiService.get(stickerKeyword);
     }
 
     // Fire and forget these async calls
-    apiService.updateCount(sticker._id);
-    apiService.refreshCache();
+    if (sticker) {
+      apiService.updateCount(sticker._id);
+      apiService.refreshCache();
+    }
 
     return sticker;
   } catch (error) {

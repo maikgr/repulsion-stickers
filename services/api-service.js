@@ -15,7 +15,11 @@ const refreshCache = async () => {
 
 const get = (keyword) => stickersMap[keyword];
 
-const getRandom = (keyword) => stickersCache.filter(s => s.keyword.includes(keyword));
+const getRandom = (keyword) => {
+  const matches = stickersCache.filter(s => s.keyword.includes(keyword));
+  const index = Math.floor(Math.random() * matches.length);
+  return matches[index];
+}
 
 const updateCount = (id) => console.log("update count", id);
 
