@@ -5,6 +5,7 @@ const apiService = require('./services/api-service.js');
 
 const client = new Discord.Client();
 const keyLetter = process.env.DEFAULT_PREFIX;
+// Bot Invites https://discord.com/oauth2/authorize?client_id=CLIENT_ID&scope=bot&permissions=50176
 
 client.on('ready', async () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -16,9 +17,9 @@ client.on('error', (err) => {
   console.error(err)
 });
 
-client.on('message', (msg) => {
+client.on('message', (message) => {
   // Ignore all messages from bots
-  if (msg.author.bot) return;
+  if (message.author.bot) return;
 
   // Check if message is @me commands
   // if (msg.isMemberMentioned(client.user)) {
@@ -26,14 +27,14 @@ client.on('message', (msg) => {
   // }
 
   // Check if message is ;keywords
-  else if (msg.content.startsWith(keyLetter)) {
-    const content = msg.content.substring(keyLetter.length);
+  else if (message.content.startsWith(keyLetter)) {
+    const content = message.content.substring(keyLetter.length);
     const sticker = stickers(content);
     if (sticker) {
       const embed = new Discord.MessageEmbed()
         .setImage(sticker.url)
         .setFooter(sticker.keyword);
-      return msg.channel.send(embed);
+      return message.channel.send(embed);
     }
   }
 
