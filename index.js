@@ -1,10 +1,12 @@
 const Discord = require('discord.js');
-const fs = require('fs');
 const stickers = require('./features/stickers.js');
+const modules = require('./features/modules.js');
 const apiService = require('./services/api-service.js');
 
 const client = new Discord.Client();
 const keyLetter = process.env.DEFAULT_PREFIX;
+const mentionString = "<!@";
+
 // Bot Invites https://discord.com/oauth2/authorize?client_id=CLIENT_ID&scope=bot&permissions=50176
 
 client.on('ready', async () => {
@@ -21,10 +23,11 @@ client.on('message', (message) => {
   // Ignore all messages from bots
   if (message.author.bot) return;
 
-  // Check if message is @me commands
-  // if (msg.isMemberMentioned(client.user)) {
-  //   return executeCommand(msg);
-  // }
+  //Check if message is @me commands
+  if (message.content.startsWith(mentionString) && message.mentions.users.first().equals(client.user)) {
+    const content = message.content.split(" ").slice(1);
+    return modules(content);
+  }
 
   // Check if message is ;keywords
   else if (message.content.startsWith(keyLetter)) {
