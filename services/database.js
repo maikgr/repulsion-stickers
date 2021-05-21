@@ -44,7 +44,7 @@ module.exports.getById = function (id) {
 }
 
 module.exports.search = function (query) {
-  return Sticker.find({ keyword: { '$regex': query, '$options' : 'i'} }).exec();
+  return Sticker.find({ keyword: { '$regex': query, '$options' : 'i'} }).lean().exec();
 }
 
 module.exports.add = async function (keyword, url, uploaderId, uploaderUsername) {

@@ -34,32 +34,21 @@ const add = async (sticker) => {
   throw new Error("Failed to create sticker " + sticker.keyword + ".");
 }
 
+const search = async (query) => {
+  if(!query || query === "") return;
+   
+  return await database.search(query);
+}
+
 module.exports = {
   get,
   getRandom,
   increaseUseCount,
   refreshCache,
   hasKeyword,
-  add
+  add,
+  search
 }
-
-// module.exports.search = async (query) => {
-//     const minCharacterLength = 2;
-//     if(!query || query.length < minCharacterLength) {
-//       throw new Error(`Please provide a search query with a minimum of ${minCharacterLength} characters.`);
-//     }
-
-//     try {
-//         const stickers = await database.search(query);
-//         if (stickers && stickers.length) {
-//             return stickers.map(s => parseSticker(s));
-//         }
-//         throw new Error();
-//     }
-//     catch {
-//         throw new Error("No sticker with keyword '" + query + "' found.");
-//     }
-// }
 
 // module.exports.update = async (id, sticker) => {
 //     try {
