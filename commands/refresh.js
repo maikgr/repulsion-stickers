@@ -3,7 +3,7 @@ const apiService = require('../services/api-service');
 module.exports = {
 	name: "refresh",
 	args: false,
-	ownerOnly: true,
+	ownerOnly: false,
 	cooldown: 3,
 	sortIndex: 0,
 	usage: "",
