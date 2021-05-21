@@ -1,16 +1,16 @@
-const stickers = require('../features/stickers');
+const apiService = require('../services/api-service');
 
 module.exports = {
-    name: 'refresh',
-    args: false,
-    ownerOnly: true,
-    cooldown: 3,
-    sortIndex: 0,
-    usage: '',
-    optional: ''
+	name: "refresh",
+	args: false,
+	ownerOnly: true,
+	cooldown: 3,
+	sortIndex: 0,
+	usage: "",
+	optional: ""
 }
 
 module.exports.execute = async function (message, args) {
-    await stickers.refresh();
-    message.channel.send('Done.')
+	await apiService.refreshCache();
+	return message.channel.send("Done.")
 }
