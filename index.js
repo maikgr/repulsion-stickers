@@ -5,7 +5,7 @@ const apiService = require('./services/api-service.js');
 
 const client = new Discord.Client();
 const keyLetter = process.env.DEFAULT_PREFIX;
-const mentionString = "<!@";
+const mentionString = "<@!";
 
 // Bot Invites https://discord.com/oauth2/authorize?client_id=CLIENT_ID&scope=bot&permissions=50176
 
@@ -19,14 +19,13 @@ client.on('error', (err) => {
   console.error(err)
 });
 
-client.on('message', (message) => {
+client.on('message', async (message) => {
   // Ignore all messages from bots
   if (message.author.bot) return;
 
   //Check if message is @me commands
   if (message.content.startsWith(mentionString) && message.mentions.users.first().equals(client.user)) {
-    const content = message.content.split(" ").slice(1);
-    return modules(content);
+    return modules(message);
   }
 
   // Check if message is ;keywords
@@ -45,33 +44,3 @@ client.on('message', (message) => {
 });
 
 client.login(process.env.BOT_TOKEN);
-
-const executeCommand = (msg) => {
-  const words = msg.content.replace(keyLetter, '').split(/ +/);
-  const commandAttempt = words[1].toLowerCase();
-
-  const command = client.commands.get(commandAttempt);
-  const args = words.slice(2);
-  
-  if (!command) return;
-
-  if (command.ownerOnly && msg.author.id !== process.env.OWNER_ID) {
-    return msg.reply(`you don't have permission to use this command.`);
-  }
-
-  if (command.args && args.length < command.usage.split(' ').length) {
-    let reply = "Incorrect command usage.";
-
-    if (command.usage) {
-      reply += `\nCommand syntax: \`@me ${commandAttempt} ${command.usage} ${command.optional}\``;
-    }
-
-    return msg.reply(reply);
-  }
-
-  try {
-    return command.execute(msg, args);
-  } catch (error) {
-    return msg.channel.send(error.message.message);
-  }
-}

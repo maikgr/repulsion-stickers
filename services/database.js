@@ -47,19 +47,20 @@ module.exports.search = function (query) {
   return Sticker.find({ keyword: { '$regex': query, '$options' : 'i'} }).exec();
 }
 
-module.exports.add = function (keyword, url, uploaderId, uploaderUsername) {
-    let newSticker = new Sticker({
-        keyword: keyword,
-        url: url,
-        useCount: 0,
-        upload: {
-            id: uploaderId,
-            username: uploaderUsername,
-            date: moment().format()
-        }
-    });
+module.exports.add = async function (keyword, url, uploaderId, uploaderUsername) {
+  let newSticker = new Sticker({
+    keyword: keyword,
+    url: url,
+    useCount: 0,
+    upload: {
+        id: uploaderId,
+        username: uploaderUsername,
+        date: new Date()
+    }
+  });
 
-    return newSticker.save();
+  const sticker = await newSticker.save();
+  return sticker.toObject({ minimize:true });
 }
 
 module.exports.update = function (id, sticker) {

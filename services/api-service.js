@@ -1,7 +1,7 @@
 const database = require('./database');
 
-let stickersCache = [];
-let stickersMap = {};
+this.stickersCache = [];
+this.stickersMap = {};
 
 const refreshCache = async () => {
   stickersCache = await database.getAll();
@@ -23,11 +23,24 @@ const getRandom = (keyword) => {
 
 const increaseUseCount = async (sticker) => await database.increaseUseCount(sticker);
 
+const hasKeyword = (keyword) => stickersCache.includes(s => s.keyword === keyword);
+
+const add = async (sticker) => {
+  const newSticker = await database.add(sticker.keyword, sticker.url, sticker.upload.id, sticker.upload.username);
+  if (newSticker) {
+    await refreshCache();
+    return newSticker;
+  }
+  throw new Error("Failed to create sticker " + sticker.keyword + ".");
+}
+
 module.exports = {
   get,
   getRandom,
   increaseUseCount,
-  refreshCache
+  refreshCache,
+  hasKeyword,
+  add
 }
 
 // module.exports.search = async (query) => {
