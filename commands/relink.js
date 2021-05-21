@@ -33,4 +33,3 @@ module.exports = {
         }
     }
 };
-console.log(`Loaded command relink`);

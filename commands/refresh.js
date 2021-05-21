@@ -14,4 +14,3 @@ module.exports.execute = async function (message, args) {
     await stickers.refresh();
     message.channel.send('Done.')
 }
-console.log(`Loaded command refresh`);
