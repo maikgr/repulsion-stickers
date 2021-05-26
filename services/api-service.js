@@ -1,7 +1,7 @@
 const database = require('./database');
 
-this.stickersCache = [];
-this.stickersMap = {};
+stickersCache = [];
+stickersMap = {};
 
 const refreshCache = async () => {
   stickersCache = await database.getAll();
@@ -34,10 +34,18 @@ const add = async (sticker) => {
   throw new Error("Failed to create sticker " + sticker.keyword + ".");
 }
 
-const search = async (query) => {
+const search = (query) => {
   if(!query || query === "") return;
    
-  return await database.search(query);
+  return stickersCache.filter(s => s.keyword.includes(query));
+}
+
+const rename = async (keyword, newKeyword) => {
+  const sticker = await get(keyword);
+  if (!sticker) throw new Error("Cannot find sticker with keyword: " + keyword);
+
+  const newSticker = await database.rename(sticker.id, newKeyword);
+  await refreshCache();
 }
 
 module.exports = {
@@ -47,7 +55,9 @@ module.exports = {
   refreshCache,
   hasKeyword,
   add,
-  search
+  search,
+  rename,
+  relink
 }
 
 // module.exports.update = async (id, sticker) => {

@@ -2,7 +2,7 @@ const fs = require('fs');
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const commands = {}
-const refactoredCommands = ["add", "refresh", "search"]
+const refactoredCommands = ["add", "refresh", "search", "rename", "relink"]
 
 for (const commandFile of commandFiles) {
   // (WIP) only add refactored command modules

@@ -1,35 +1,23 @@
 const apiService = require('../services/api-service');
-const feature = require('../features/stickers');
+const sanitizer = require('../services/keyword-sanitizer');
 
 module.exports = {
-    name: 'rename',
-    args: true,
-    ownerOnly: false,
-    cooldown: 3,
-    sortIndex: 0,
-    usage: '[oldkeyword] [newkeyword]',
-    execute: async function (message, args) {
-        const oldKey = args[0];
-        const newKey = args[1].replace('?', '');
+  name: 'rename',
+  args: true,
+  ownerOnly: false,
+  cooldown: 3,
+  sortIndex: 0,
+  usage: '[oldkeyword] [newkeyword]',
+  execute: async function (message, args) {
+    const oldKey = sanitizer(args[0]);
+    const newKey = sanitizer(args[1]);
 
-        try {
-            message = await message.channel.send(`Connecting to API...`);
-            const sticker = await apiService.get(oldKey);
-            const newSticker = {
-                keyword: newKey,
-                url: sticker.url,
-                useCount: sticker.useCount || 0,
-                upload: {
-                    id: sticker.upload.id,
-                    date: sticker.upload.date,
-                    username: sticker.upload.username
-                }
-            }
-            const result = await apiService.update(sticker.id, newSticker);
-            feature.refresh();
-            return message.edit(`Updated ${sticker.keyword} to ${result.keyword}.`);
-        } catch (error) {
-            return message.edit(error.error.message);
-        }
+    const sentMessage = await message.channel.send(`Renaming stickers...`);
+    try {
+      const sticker = await apiService.rename(oldKey, newKey);
+      return sentMessage.edit(`Updated ${oldKey} to ${sticker.keyword}.`);
+    } catch (error) {
+      return sentMessage.edit(error.message || error.error.message);
     }
+  }
 };

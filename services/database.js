@@ -32,7 +32,7 @@ module.exports.getAll = async function () {
 }
 
 module.exports.increaseUseCount = async function (sticker) {
-  return await Sticker.findByIdAndUpdate(sticker._id, { useCount: ++sticker.useCount }, { new: true }).lean().exec();
+  return await Sticker.findByIdAndUpdate(sticker._id, { "useCount": ++sticker.useCount }, { new: true }).lean().exec();
 }
 
 module.exports.getByKeyword = function (keyword) {
@@ -63,6 +63,9 @@ module.exports.add = async function (keyword, url, uploaderId, uploaderUsername)
   return sticker.toObject({ minimize:true });
 }
 
+module.exports.rename = async function (id, newKeyword) {
+  return await Sticker.findByIdAndUpdate(id, { "keyword": newKeyword }, { new: true }).lean().exec();
+}
 module.exports.update = function (id, sticker) {
     return Sticker.findByIdAndUpdate(id, {
         keyword: sticker.keyword,
