@@ -46,6 +46,16 @@ const rename = async (keyword, newKeyword) => {
 
   const newSticker = await database.rename(sticker.id, newKeyword);
   await refreshCache();
+  return newSticker;
+}
+
+const relink = async (keyword, newUrl) => {
+  const sticker = await get(keyword);
+  if (!sticker) throw new Error("Cannot find sticker with keyword: " + keyword);
+
+  const newSticker = await database.relink(sticker.id, newUrl);
+  await refreshCache();
+  return newSticker;
 }
 
 module.exports = {

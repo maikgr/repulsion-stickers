@@ -1,35 +1,25 @@
-const apiService = require('../services/api-service')
-const feature = require('../features/stickers');
+const apiService = require('../services/api-service');
+const sanitizer = require('../services/keyword-sanitizer');
+const urlValidator = require('../services/url-validator-service');
 
 module.exports = {
-    name: 'relink',
-    args: true,
-    ownerOnly: false,
-    cooldown: 3,
-    sortIndex: 0,
-    usage: '[keyword] [newurl]',
-    execute: async function (message, args) {
-        const keyword = args[0];
-        let url = args[1];
-        
-        try {
-            message = await message.channel.send(`Connecting to API...`);
-            const sticker = await apiService.get(keyword);
-            const newSticker = {
-                keyword: sticker.keyword,
-                url: url,
-                useCount: sticker.useCount || 0,
-                upload: {
-                    id: sticker.upload.id,
-                    date: sticker.upload.date,
-                    username: sticker.upload.username
-                }
-            }
-            const result = await apiService.update(sticker.id, newSticker);
-            feature.refresh();
-            return message.edit(`Updated ${sticker.keyword} url to ${result.url}.`);
-        } catch (error) {
-            return message.edit(error.error.message);
-        }
+  name: 'relink',
+  args: true,
+  ownerOnly: false,
+  cooldown: 3,
+  sortIndex: 0,
+  usage: '[keyword] [newurl]',
+  execute: async function (message, args) {
+    const keyword = sanitizer(args[0]);
+    let url = urlValidator(args[1]);
+
+    const sentMessage = await message.channel.send(`Relinking image...`);
+    
+    try {
+      const newSticker = await apiService.relink(keyword, url);
+      return sentMessage.edit(`Updated ${keyword} url to \`${newSticker.url}\``);
+    } catch (error) {
+      return sentMessage.edit(error.message || error.error.message);
     }
+  }
 };

@@ -66,6 +66,11 @@ module.exports.add = async function (keyword, url, uploaderId, uploaderUsername)
 module.exports.rename = async function (id, newKeyword) {
   return await Sticker.findByIdAndUpdate(id, { "keyword": newKeyword }, { new: true }).lean().exec();
 }
+
+module.exports.relink = async function (id, newUrl) {
+  return await Sticker.findByIdAndUpdate(id, { "url": newUrl }, { new: true}).lean().exec();
+}
+
 module.exports.update = function (id, sticker) {
     return Sticker.findByIdAndUpdate(id, {
         keyword: sticker.keyword,
