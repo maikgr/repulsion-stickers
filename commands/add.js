@@ -1,5 +1,6 @@
 const apiService = require('../services/api-service');
 const urlValidator = require('../services/url-validator-service');
+const sanitizer = require('../services/keyword-sanitizer');
 
 module.exports = {
   name: 'add',
@@ -10,7 +11,7 @@ module.exports = {
   usage: '[keyword]',
   optional: '[url or attachment]',
   execute: async function (message, args) {
-    const keyword = args[0];
+    const keyword = sanitizer(args[0]);
     const url = args[1];
     if (!urlValidator.validate(url)) {
       return message.reply(`\`${url}\` isn't a valid HTTP url.`);
@@ -24,7 +25,6 @@ module.exports = {
     const sentMessage = await message.channel.send(`Uploading sticker...`);
 
     try {
-
       const sticker = {
         keyword,
         url,

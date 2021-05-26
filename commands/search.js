@@ -1,5 +1,6 @@
 const apiService = require('../services/api-service');
 const MessageEmbed = require('discord.js').MessageEmbed;
+const sanitizer = require('../services/keyword-sanitizer');
 
 module.exports = {
   name: "search",
@@ -9,7 +10,7 @@ module.exports = {
   sortIndex: 0,
   usage: "[query]",
   execute: async function (message, args) {
-    const query = args[0];
+    const query = sanitizer(args[0]);
     const sentMessage = await message.channel.send("Searching...");
 
     let stickers;
